@@ -20,11 +20,7 @@ struct showImagesArgs
   int *luminanceThreshold;
 };
 
-showImagesArgs *args;
-
-// void showImages(showImagesArgs* args);
-void showImages( // showImagesArgs* args
-);
+void showImages(showImagesArgs *args);
 
 void onHueChanged(int pos, void *userdata);
 
@@ -42,26 +38,22 @@ int main(int argc, char **argv)
   int luminanceThreshold = 200;
   String nomeJanela1 = "Resultado";
 
-  args = new showImagesArgs{&nomeJanela1, &input, &background, &chromaKey, &result,
-                            &chromaColor, &colorThreshold, &luminanceThreshold};
+  showImagesArgs *args = new showImagesArgs{
+      &nomeJanela1, &input, &background, &chromaKey,
+      &result, &chromaColor, &colorThreshold, &luminanceThreshold};
 
   resize(background, background, input.size());
-
   namedWindow(nomeJanela1, WINDOW_AUTOSIZE);
-
-  cout << args << endl;
 
   createTrackbar("Hue",
                  nomeJanela1, &colorThreshold,
-                 MAX_HUE, onHueChanged);
+                 MAX_HUE, onHueChanged, args);
 
   createTrackbar("Light",
                  nomeJanela1, &luminanceThreshold,
-                 MAX_LUMINANCE, onLuminanceChanged);
+                 MAX_LUMINANCE, onLuminanceChanged, args);
 
-  // showImages(args);
-  showImages();
-
+  showImages(args);
   waitKey(0);
 
   delete[] args;
@@ -70,18 +62,19 @@ int main(int argc, char **argv)
 
 void onHueChanged(int pos, void *userdata)
 {
+  showImagesArgs *args = (showImagesArgs *)userdata;
   *args->colorThreshold = pos;
-  showImages();
+  showImages(args);
 }
 
 void onLuminanceChanged(int pos, void *userdata)
 {
+  showImagesArgs *args = (showImagesArgs *)userdata;
   *args->luminanceThreshold = pos;
-  showImages();
+  showImages(args);
 }
 
-void showImages( // showImagesArgs *args
-)
+void showImages(showImagesArgs *args)
 {
   *args->chromaKey = Mat::zeros(args->input->size(), args->input->type());
   *args->result = Mat::zeros(args->input->size(), args->input->type());

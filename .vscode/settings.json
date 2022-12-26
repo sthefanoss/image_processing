@@ -8,6 +8,7 @@
         "functional": "cpp",
         "new": "cpp",
         "initializer_list": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "iostream": "cpp"
     }
 }
