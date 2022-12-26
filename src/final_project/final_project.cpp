@@ -24,15 +24,16 @@ int main(int argc, char **argv)
       Vec3b backgroundPixel = background.at<Vec3b>(p);
 
       float t = chromaColor.ddot(inputPixel) / sqrt(chromaColor.ddot(chromaColor) * inputPixel.ddot(inputPixel));
-      if (t > 0.7)
+      float h = inputPixel.ddot(inputPixel) / (3 *255.0 * 255.0);
+      if (t > 0.7 && h>0.01)
       {
         result.at<Vec3b>(p) = backgroundPixel;
-        chromaKey.at<Vec3b>(p) = chromaColor;
+        chromaKey.at<Vec3b>(p) = inputPixel;
       }
       else
       {
         result.at<Vec3b>(p) = inputPixel;
-        chromaKey.at<Vec3b>(p) =  Vec3b(0, 0, 0);
+        chromaKey.at<Vec3b>(p) =  Vec3b(255, 255, 255);
       }
     }
   }
