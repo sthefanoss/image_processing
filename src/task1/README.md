@@ -12,5 +12,15 @@ GRAY (256 tons de cinza), HSV e YCrCb. Exibir as quatro imagens, incluindo a ima
 original RGB, em uma única janela gráfica OpenCV, em uma matriz de imagens 2x2.
 
 ---
+
+## Como rodar
+```BASH
+g++ task1.cpp -o task1.out `pkg-config --cflags --libs opencv4`
+```
+```BASH
+./task1.out
+```
+
+---
 Enviar o arquivo da atividade (atv-03.cpp) e o arquivo da imagem utilizada (imagem.jpg),
 para glaucius@pelotas.ifsul.edu.br.
