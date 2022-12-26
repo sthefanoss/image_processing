@@ -16,10 +16,10 @@ Mat translacaoImagem(const Mat& imOrig, int tx, int ty)
 //============================
 int main(int argc, char** argv)
 {
-  Mat imRGB=imread("Lena.tif", CV_LOAD_IMAGE_COLOR);
+  Mat imRGB=imread("Lena.tif", IMREAD_COLOR);
   Mat imTrans = translacaoImagem(imRGB, 50, 100);
   String nomeJanela="Translacao";
-  namedWindow(nomeJanela, CV_WINDOW_AUTOSIZE);
+  namedWindow(nomeJanela, WINDOW_AUTOSIZE);
   imshow(nomeJanela, imTrans);
   
   waitKey(0);

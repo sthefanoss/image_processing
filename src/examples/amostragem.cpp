@@ -12,7 +12,7 @@ int alteraGradeAmostragem(String nomeImagemRGB) {
     String titulo1, titulo2, titulo3;
 
     Mat imRGB;
-    imRGB = imread(nomeImagemRGB, CV_LOAD_IMAGE_COLOR);  
+    imRGB = imread(nomeImagemRGB, IMREAD_COLOR);  
   
     titulo1="RGB";
     namedWindow(titulo1, WINDOW_AUTOSIZE);

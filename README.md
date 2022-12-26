@@ -13,3 +13,10 @@ g++ exemplo.cpp -o exemplo.out `pkg-config --cflags --libs opencv4`
 ```BASH
 ./exemplo.out
 ```
+
+## Substituições para o OpenCV 4
+- CV_LOAD_IMAGE_COLOR -> IMREAD_COLOR
+- CV_WINDOW_AUTOSIZE -> WINDOW_AUTOSIZE
+- CV_IMWRITE_PNG_COMPRESSION -> IMWRITE_PNG_COMPRESSION
+- CV_RGB2YCrCb -> COLOR_RGB2YCrCb
+- CV_BGR2GRAY -> COLOR_BGR2GRAY

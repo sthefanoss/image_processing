@@ -22,14 +22,14 @@ int main( int argc, char** argv )
     }
 
   /// Converte imagem para tons de cinza
-  cvtColor( src, src, CV_BGR2GRAY );
+  cvtColor( src, src, COLOR_BGR2GRAY );
 
   /// Equaliza o histograma da imagem
   equalizeHist( src, dst );
 
   /// Exibe os resultados
-  namedWindow( source_window, CV_WINDOW_AUTOSIZE );
-  namedWindow( equalized_window, CV_WINDOW_AUTOSIZE );
+  namedWindow( source_window, WINDOW_AUTOSIZE );
+  namedWindow( equalized_window, WINDOW_AUTOSIZE );
 
   imshow( source_window, src );
   imshow( equalized_window, dst );

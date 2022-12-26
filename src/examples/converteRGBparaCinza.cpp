@@ -12,7 +12,7 @@ int exibeImagemRGBparaCinza(String nomeImagemRGB) {
   String titulo1, titulo2;
   Mat imRGB;
   
-  imRGB = imread(nomeImagemRGB, CV_LOAD_IMAGE_COLOR);
+  imRGB = imread(nomeImagemRGB, IMREAD_COLOR);
   
   if(! imRGB.data) {
     cout << "Imagem não foi localizada!" << endl;
@@ -25,10 +25,10 @@ int exibeImagemRGBparaCinza(String nomeImagemRGB) {
     imshow(titulo1, imRGB);
     
     Mat imCinza;
-    cvtColor(imRGB, imCinza, CV_RGB2GRAY);
+    cvtColor(imRGB, imCinza, COLOR_RGB2GRAY);
     
     vector<int> compression_params;
-    compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+    compression_params.push_back(IMWRITE_PNG_COMPRESSION);
     compression_params.push_back(9); // Nível de compressao [0,9]
     imwrite("Lena256Cinza.png", imCinza, compression_params);
     

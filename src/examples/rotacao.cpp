@@ -18,10 +18,10 @@ Mat rotacaoImagem(const Mat& imOrig, double ang)
 //============================
 int main(int argc, char** argv)
 {
-  Mat imRGB=imread("Lena.tif", CV_LOAD_IMAGE_COLOR);
+  Mat imRGB=imread("Lena.tif", IMREAD_COLOR);
 	Mat imRot=rotacaoImagem(imRGB, 45);
   String nomeJanela="Rotacao";
-  namedWindow(nomeJanela, CV_WINDOW_AUTOSIZE);
+  namedWindow(nomeJanela, WINDOW_AUTOSIZE);
   imshow(nomeJanela, imRot);
   
   waitKey(0);

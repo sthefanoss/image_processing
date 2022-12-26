@@ -14,8 +14,8 @@ void concatenaDuasImagens(String nomeImagem1, String nomeImagem2) {
   Mat im1, im2, im;
   String titulo;
   
-  im1=imread(nomeImagem1, CV_LOAD_IMAGE_COLOR);
-  im2=imread(nomeImagem2, CV_LOAD_IMAGE_COLOR);
+  im1=imread(nomeImagem1, IMREAD_COLOR);
+  im2=imread(nomeImagem2, IMREAD_COLOR);
   hconcat(im1, im2, im);
   //vconcat(im1, im2, im);
   

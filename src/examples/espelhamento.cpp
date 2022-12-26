@@ -16,21 +16,21 @@ Mat espelhamentoImagem(const Mat& imOrig, int cod)
 //============================
 int main(int argc, char** argv)
 {
-  Mat imRGB=imread("Lena.tif", CV_LOAD_IMAGE_COLOR);
+  Mat imRGB=imread("Lena.tif", IMREAD_COLOR);
   
   Mat imEspO = espelhamentoImagem(imRGB, 0);
   String nomeJanelaO="Espelhamento ORIGEM";
-  namedWindow(nomeJanelaO, CV_WINDOW_AUTOSIZE);
+  namedWindow(nomeJanelaO, WINDOW_AUTOSIZE);
   imshow(nomeJanelaO, imEspO);
   
   Mat imEspY = espelhamentoImagem(imRGB, 1);
   String nomeJanelaY="Espelhamento EIXO-Y";
-  namedWindow(nomeJanelaY, CV_WINDOW_AUTOSIZE);
+  namedWindow(nomeJanelaY, WINDOW_AUTOSIZE);
   imshow(nomeJanelaY, imEspY);
   
   Mat imEspX = espelhamentoImagem(imRGB, -1);
   String nomeJanelaX="Espelhamento EIXO-X";
-  namedWindow(nomeJanelaX, CV_WINDOW_AUTOSIZE);
+  namedWindow(nomeJanelaX, WINDOW_AUTOSIZE);
   imshow(nomeJanelaX, imEspX);
   
   waitKey(0);

@@ -65,16 +65,16 @@ int main( int argc, char** argv )
   }
 
   // Ativa a janela de exibição
-  namedWindow("Imagem - Canal R", CV_WINDOW_AUTOSIZE );
+  namedWindow("Imagem - Canal R", WINDOW_AUTOSIZE );
   imshow("Imagem - Canal R", bgr_planes[0] );
   
-  namedWindow("Imagem - Canal G", CV_WINDOW_AUTOSIZE );
+  namedWindow("Imagem - Canal G", WINDOW_AUTOSIZE );
   imshow("Imagem - Canal G", bgr_planes[1] );
   
-  namedWindow("Imagem - Canal B", CV_WINDOW_AUTOSIZE );
+  namedWindow("Imagem - Canal B", WINDOW_AUTOSIZE );
   imshow("Imagem - Canal B", bgr_planes[2] );
   
-  namedWindow("Histogramas (RGB)", CV_WINDOW_AUTOSIZE );
+  namedWindow("Histogramas (RGB)", WINDOW_AUTOSIZE );
   imshow("Histogramas (RGB)", histImage );
 
   waitKey(0);

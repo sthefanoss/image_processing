@@ -1,7 +1,6 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
-#include <stdlib.h>
-#include <stdio.h>
+#include <iostream>
 
 using namespace cv;
 
@@ -29,10 +28,10 @@ int main( int argc, char** argv )
   src = imread( argv[1], 1 );
 
   // Converte a imagem para tons de cinza
-  cvtColor( src, src_gray, CV_RGB2GRAY );
+  cvtColor( src, src_gray, COLOR_RGB2GRAY );
 
   // Cria uma janela para exibição dos resultados
-  namedWindow( window_name, CV_WINDOW_AUTOSIZE );
+  namedWindow( window_name, WINDOW_AUTOSIZE );
 
   // Cria uma barra de comando para escolher o tipo de limiarização
   createTrackbar( trackbar_type,

@@ -13,7 +13,7 @@ int requantizacao(String nomeImagemRGB, int div) {
     String titulo1, titulo2;
 
     Mat imRGB;
-    imRGB = imread(nomeImagemRGB, CV_LOAD_IMAGE_COLOR);  
+    imRGB = imread(nomeImagemRGB, IMREAD_COLOR);  
     
     if(! imRGB.data)                            
       {

@@ -12,7 +12,7 @@ int exibeImagemRGBparaYCrCb(String nomeImagemRGB) {
   String titulo1, titulo2;
   Mat imRGB;
   
-  imRGB = imread(nomeImagemRGB, CV_LOAD_IMAGE_COLOR);
+  imRGB = imread(nomeImagemRGB, IMREAD_COLOR);
   
   if(! imRGB.data) {
     cout << "Imagem não foi localizada!" << endl;
@@ -25,7 +25,7 @@ int exibeImagemRGBparaYCrCb(String nomeImagemRGB) {
     imshow(titulo1, imRGB);
     
     Mat imYCrCb;
-    cvtColor(imRGB, imYCrCb, CV_RGB2YCrCb);
+    cvtColor(imRGB, imYCrCb, COLOR_RGB2YCrCb);
     
     imwrite("LenaYCrCb.tif", imYCrCb);
     
