@@ -22,10 +22,17 @@ int main(int argc, char **argv)
       Point p = Point(x, y);
       Vec3b inputPixel = input.at<Vec3b>(p);
       Vec3b backgroundPixel = background.at<Vec3b>(p);
-
+      // ajusta se o pixel for 100% preto, para não dar divisão por zero no cálculo de t
+      if (!backgroundPixel[0] && !backgroundPixel[1] && !backgroundPixel[2])
+      {
+        backgroundPixel[0] = 1;
+        backgroundPixel[1] = 1;
+        backgroundPixel[2] = 1;
+      }
+      // calcula o "ângulo" entre a cor do pixel e a cor do chroma
       float t = chromaColor.ddot(inputPixel) / sqrt(chromaColor.ddot(chromaColor) * inputPixel.ddot(inputPixel));
-      float h = inputPixel.ddot(inputPixel) / (3 *255.0 * 255.0);
-      if (t > 0.7 && h>0.01)
+      float h = inputPixel.ddot(inputPixel) / (3 * 255.0 * 255.0);
+      if (t > 0.7 && h > 0.01)
       {
         result.at<Vec3b>(p) = backgroundPixel;
         chromaKey.at<Vec3b>(p) = inputPixel;
@@ -33,7 +40,7 @@ int main(int argc, char **argv)
       else
       {
         result.at<Vec3b>(p) = inputPixel;
-        chromaKey.at<Vec3b>(p) =  Vec3b(255, 255, 255);
+        chromaKey.at<Vec3b>(p) = Vec3b(255, 255, 255);
       }
     }
   }
@@ -41,8 +48,6 @@ int main(int argc, char **argv)
   hconcat(input, background, input);
   hconcat(chromaKey, result, chromaKey);
   vconcat(input, chromaKey, input);
-
-
 
   String nomeJanela1 = "Resultado";
   namedWindow(nomeJanela1, WINDOW_AUTOSIZE);
