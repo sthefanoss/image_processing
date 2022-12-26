@@ -2,6 +2,12 @@
     "files.associations": {
         "ostream": "cpp",
         "*.tcc": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "functional": "cpp",
+        "new": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     }
 }
