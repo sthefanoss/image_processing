@@ -6,30 +6,32 @@ using namespace cv;
 using namespace std;
 
 //-----------------------------------
-int exibeImagem(String nomeImagem) {
+int exibeImagem(String nomeImagem)
+{
 
- Mat image;
+    Mat image;
 
- image = imread(nomeImagem, IMREAD_COLOR);
+    image = imread(nomeImagem, IMREAD_COLOR);
 
- if(! image.data) {
- cout << "Imagem não foi localizada!" << endl;
- return -1;
- }
+    if (!image.data)
+    {
+        cout << "Imagem não foi localizada!" << endl;
+        return -1;
+    }
 
- namedWindow(nomeImagem, WINDOW_AUTOSIZE);
- imshow(nomeImagem, image);
+    namedWindow(nomeImagem, WINDOW_AUTOSIZE);
+    imshow(nomeImagem, image);
 
- waitKey(0);
- return 0;
-
+    waitKey(0);
+    return 0;
 }
 //-------------------------------
-int main( int argc, char** argv )
+
+int main(int argc, char **argv)
 {
- int r;
+    int r;
 
- r=exibeImagem("assets/Lena.tif");
+    r = exibeImagem("assets/Lena.tif");
 
- return 0;
+    return 0;
 }
