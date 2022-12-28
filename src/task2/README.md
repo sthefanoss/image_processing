@@ -11,6 +11,17 @@ A seguir, aplicar os filtros estudados no texto T06,
 exibindo as imagens resultantes em uma única janela OpenCV, contendo também a
 imagem original ruidosa. 
 
+
+---
+
+## Como rodar
+```BASH
+g++ task2.cpp -o task2.out `pkg-config --cflags --libs opencv4`
+```
+```BASH
+./task2.out
+```
+
 ---
 Enviar o arquivo da atividade (atv-06.cpp) e o arquivo da imagem
 utilizada (imagem.jpg), para glaucius@pelotas.ifsul.edu.br. 
