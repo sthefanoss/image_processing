@@ -4,6 +4,7 @@
 
 #define MAX_HUE 1000
 #define MAX_LUMINANCE 1000
+#define MAX_SIZE 500
 
 using namespace cv;
 using namespace std;
@@ -26,11 +27,15 @@ void onHueChanged(int pos, void *userdata);
 
 void onLuminanceChanged(int pos, void *userdata);
 
+void resizeToMaxSize(Mat &m);
+
 //============================
 int main(int argc, char **argv)
 {
   Mat input = imread("input.jpg", IMREAD_COLOR);
   Mat background = imread("background.jpg", IMREAD_COLOR);
+  resizeToMaxSize(input);
+  resize(background, background, input.size());
   Mat chromaKey;
   Mat result;
   Vec3b chromaColor = Vec3b(0, 255, 0); // Verde
@@ -42,7 +47,6 @@ int main(int argc, char **argv)
       &nomeJanela1, &input, &background, &chromaKey,
       &result, &chromaColor, &colorThreshold, &luminanceThreshold};
 
-  resize(background, background, input.size());
   namedWindow(nomeJanela1, WINDOW_AUTOSIZE);
 
   createTrackbar("Hue",
@@ -117,4 +121,27 @@ void showImages(showImagesArgs *args)
   cv::hconcat(*args->chromaKey, *args->result, h2);
   cv::vconcat(h1, h2, v);
   cv::imshow(*args->windowName, v);
+}
+
+void resizeToMaxSize(Mat &m)
+{
+  if (m.size[0] < MAX_SIZE && m.size[1] < MAX_SIZE)
+    return;
+
+  Size size = Size(0,0);
+  Size currentSize = m.size();
+  double ratio = (double) currentSize.height / currentSize.width;
+
+  if (ratio > 1)
+  {
+    size.height = MAX_SIZE;
+    size.width = MAX_SIZE / ratio;
+  }
+  else
+  {
+    size.height = MAX_SIZE * ratio;
+    size.width = MAX_SIZE;
+  }
+
+  resize(m, m, size);
 }
