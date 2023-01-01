@@ -12,10 +12,10 @@ using namespace std;
 typedef struct
 {
   String *windowName;
-  Mat *input;
-  Mat *inputYCbCr;
+  Mat *foreground;
+  Mat *foregroundYCbCr;
   Mat *background;
-  Mat *colorWeel;
+  Mat *colorWheel;
   int colorIndex;
   int colorTolerance;
 } showImagesArgs;
@@ -35,16 +35,32 @@ void resizeToMaxSize(Mat &m);
 //============================
 int main(int argc, char **argv)
 {
-  Mat input = imread("input.jpg", IMREAD_COLOR);
-  resizeToMaxSize(input);
+  if (argc != 3)
+  {
+    cout << "how to use: ./final_project.out [path to foreground image] [path to background image]" << endl;
+    return -1;
+  }
+  Mat foreground = imread(argv[1], IMREAD_COLOR);
+  if (!foreground.data)
+  {
+    cout << "foreground image not found!" << endl;
+    return -1;
+  }
+  resizeToMaxSize(foreground);
 
-  Mat inputYCbCr = Mat::zeros(input.size(), input.type());
-  for (int y = 0; y < input.rows; y++)
-    for (int x = 0; x < input.cols; x++)
-      inputYCbCr.at<Vec3b>(Point(x, y)) = rgb2yCbCr(input.at<Vec3b>(Point(x, y)));
+  Mat foregroundYCbCr = Mat::zeros(foreground.size(), foreground.type());
+  for (int y = 0; y < foreground.rows; y++)
+    for (int x = 0; x < foreground.cols; x++)
+      foregroundYCbCr.at<Vec3b>(Point(x, y)) = rgb2yCbCr(foreground.at<Vec3b>(Point(x, y)));
 
-  Mat background = imread("background.jpg", IMREAD_COLOR);
-  resize(background, background, input.size());
+  Mat background = imread(argv[2], IMREAD_COLOR);
+  if (!background.data)
+  {
+    cout << "background image not found!" << endl;
+    return -1;
+  }
+
+  resize(background, background, foreground.size());
 
   int colorTolerance = 104;
   String nomeJanela1 = "Resultado";
@@ -52,21 +68,21 @@ int main(int argc, char **argv)
 
   namedWindow(nomeJanela1, WINDOW_AUTOSIZE);
   namedWindow(nomeJanela2, WINDOW_AUTOSIZE);
-  Mat colorWeel = Mat::zeros(Size(COLOR_WEEL_SIZE, 42), input.type());
-  for (int x = 0; x < colorWeel.cols; x++)
+  Mat colorWheel = Mat::zeros(Size(COLOR_WEEL_SIZE, 42), foreground.type());
+  for (int x = 0; x < colorWheel.cols; x++)
   {
-    Vec3b color = Vec3b(140, 126 + 126 * cos(2 * M_PI * x / colorWeel.cols), 126 + 126 * sin(2 * M_PI * x / colorWeel.cols));
-    for (int y = 0; y < colorWeel.rows; y++)
+    Vec3b color = Vec3b(140, 127 + 127 * cos(2 * M_PI * x / colorWheel.cols), 127 + 127 * sin(2 * M_PI * x / colorWheel.cols));
+    for (int y = 0; y < colorWheel.rows; y++)
     {
-      colorWeel.at<Vec3b>(Point(x, y)) = color;
+      colorWheel.at<Vec3b>(Point(x, y)) = color;
     }
   }
-  cvtColor(colorWeel, colorWeel, COLOR_YCrCb2BGR);
+  cvtColor(colorWheel, colorWheel, COLOR_YCrCb2BGR);
 
   int selectedColor = 302;
 
-  showImagesArgs *args = new showImagesArgs{&nomeJanela1, &input, &inputYCbCr,
-                                            &background, &colorWeel, selectedColor, colorTolerance};
+  showImagesArgs *args = new showImagesArgs{&nomeJanela1, &foreground, &foregroundYCbCr,
+                                            &background, &colorWheel, selectedColor, colorTolerance};
 
   createTrackbar("Tolerance",
                  nomeJanela2, &colorTolerance,
@@ -108,37 +124,37 @@ void onColorChanged(int pos, void *userdata)
 
 void showImages(showImagesArgs *args)
 {
-  Mat chromaKey = Mat::zeros(args->input->size(), args->input->type());
-  Mat result = Mat::zeros(args->input->size(), args->input->type());
-  Vec3b foo = rgb2yCbCr(args->colorWeel->at<Vec3b>(Point(args->colorIndex, 0)));
+  Mat chromaKey = Mat::zeros(args->foreground->size(), args->foreground->type());
+  Mat result = Mat::zeros(args->foreground->size(), args->foreground->type());
+  Vec3b chromaColorAsYCbCr = rgb2yCbCr(args->colorWheel->at<Vec3b>(Point(args->colorIndex, 0)));
 
-  for (int y = 0; y < args->input->rows; y++)
+  for (int y = 0; y < args->foreground->rows; y++)
   {
-    for (int x = 0; x < args->input->cols; x++)
+    for (int x = 0; x < args->foreground->cols; x++)
     {
       Point p = Point(x, y);
-      Vec3b inputPixel = args->input->at<Vec3b>(p);
+      Vec3b foregroundPixel = args->foreground->at<Vec3b>(p);
       Vec3b backgroundPixel = args->background->at<Vec3b>(p);
 
-      Vec3i chroma2YCbCr = (Vec3i)foo - (Vec3i)args->inputYCbCr->at<Vec3b>(p);
+      Vec3i chroma2YCbCr = (Vec3i)chromaColorAsYCbCr - (Vec3i)args->foregroundYCbCr->at<Vec3b>(p);
       chroma2YCbCr[0] = 0;
-      double Tolerance = sqrt(chroma2YCbCr.ddot(chroma2YCbCr));
+      double cbCrDistance = sqrt(chroma2YCbCr.ddot(chroma2YCbCr));
 
-      if (Tolerance < args->colorTolerance)
+      if (cbCrDistance < args->colorTolerance)
       {
         result.at<Vec3b>(p) = backgroundPixel;
-        chromaKey.at<Vec3b>(p) = inputPixel;
+        chromaKey.at<Vec3b>(p) = foregroundPixel;
       }
       else
       {
-        result.at<Vec3b>(p) = inputPixel;
+        result.at<Vec3b>(p) = foregroundPixel;
         chromaKey.at<Vec3b>(p) = Vec3b(255, 255, 255);
       }
     }
   }
 
   Mat h1, h2, v;
-  cv::hconcat(*args->input, *args->background, h1);
+  cv::hconcat(*args->foreground, *args->background, h1);
   cv::hconcat(chromaKey, result, h2);
   cv::vconcat(h1, h2, v);
   cv::imshow(*args->windowName, v);
@@ -170,10 +186,10 @@ void resizeToMaxSize(Mat &m)
 void showControllers(showImagesArgs *args)
 {
 
-  Mat color = Mat::zeros(args->colorWeel->size(), args->colorWeel->type());
+  Mat color = Mat::zeros(args->colorWheel->size(), args->colorWheel->type());
   for (int y = 0; y < color.rows; y++)
     for (int x = 0; x < color.cols; x++)
-      color.at<Vec3b>(Point(x, y)) = args->colorWeel->at<Vec3b>(Point(args->colorIndex, 0));
-  cv::vconcat(*args->colorWeel, color, color);
+      color.at<Vec3b>(Point(x, y)) = args->colorWheel->at<Vec3b>(Point(args->colorIndex, 0));
+  cv::vconcat(*args->colorWheel, color, color);
   cv::imshow("Controles", color);
 }
